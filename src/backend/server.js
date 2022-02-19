@@ -68,8 +68,7 @@ io.on('connection', (socket) => {
    console.log('a user connected');
 
    socket.on('message', (msg) => {
-      console.log('received a message');
-     console.log(msg);
-     socket.broadcast.emit('message-broadcast', msg);
+     // Send to others
+     socket.broadcast.emit('message-broadcast', { message: msg, from: 'Them', sent: new Date() });
   });
  });

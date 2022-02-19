@@ -1,22 +1,15 @@
 import { Injectable } from '@angular/core';
-import { io } from 'socket.io-client'
+import { Socket } from 'ngx-socket-io';
+import { Message } from '../models/message';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ChatSocketService {
-  socket: any;
+  constructor(private socket: Socket) { }
 
-  constructor() { }
-
-  setupSocketConnection() {
-    const SOCKET_ENDPOINT = 'localhost:4000';
-    this.socket = io(SOCKET_ENDPOINT);
-    this.socket.on('message-broadcast', (data: string) => {
-      if (data) {
-       console.log(data);
-      }
-    });
+  getMessages() {
+    return this.socket.fromEvent<Message>('message-broadcast');
   }
 
   sendMessage(message: string) {

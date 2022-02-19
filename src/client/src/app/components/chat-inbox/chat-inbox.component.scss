@@ -27,4 +27,12 @@
     margin: auto 40px;
     width: 100px;
  }
- 
+
+.chat-message > div:first-child {
+    display: flex;
+}
+
+.chat-message-from {
+    font-weight: bold;
+    margin-right: 10px;
+}

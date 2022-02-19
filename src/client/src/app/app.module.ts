@@ -12,6 +12,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { UserService } from './services/user.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ChatInboxComponent } from './components/chat-inbox/chat-inbox.component';
+import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
 
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'create-user' },
@@ -20,6 +21,8 @@ const routes: Routes = [
   { path: 'users-list', component: UserListComponent },
   { path: 'thread', component: ChatInboxComponent }
 ];
+
+const config: SocketIoConfig = { url: 'http://localhost:4000', options: {} };
 
 @NgModule({
   declarations: [
@@ -31,6 +34,7 @@ const routes: Routes = [
   ],
   imports: [
     RouterModule.forRoot(routes),
+    SocketIoModule.forRoot(config),
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,

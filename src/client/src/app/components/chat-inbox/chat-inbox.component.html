@@ -1,10 +1,14 @@
 <div class="chat-messages">
     <div class="chat-messages-show-container">
-      <ul class="chat-messages-show-list">
-      </ul>
+      <div class="chat-messages-show-list">
+          <div class="chat-message" *ngFor="let message of messages">
+              <div><div class="chat-message-from">{{ message.from }}</div><div>{{ message.sent | date: 'h:mm aa' }}</div></div>
+              <div>{{message.message}}</div>
+          </div>
+      </div>
     </div>
     <div class="chat-messages-create-container"> 
-      <input class="chat-messages-create-input" [(ngModel)]="message" type="text">
-      <button  class="chat-messages-create-button" (click)="SendMessage()"> Send </button>
+      <input class="chat-messages-create-input" [(ngModel)]="message" (keydown.enter)="sendMessage()" type="text">
+      <button  class="chat-messages-create-button" (click)="sendMessage()"> Send </button>
     </div>
  </div>
