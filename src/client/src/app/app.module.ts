@@ -10,13 +10,15 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule, Routes } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
 import { UserService } from './services/user.service';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ChatInboxComponent } from './components/chat-inbox/chat-inbox.component';
 
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'create-user' },
   { path: 'create-user', component: UserCreateComponent },
   { path: 'edit-user/:id', component: UserEditComponent },
-  { path: 'users-list', component: UserListComponent }  
+  { path: 'users-list', component: UserListComponent },
+  { path: 'thread', component: ChatInboxComponent }
 ];
 
 @NgModule({
@@ -24,13 +26,15 @@ const routes: Routes = [
     AppComponent,
     UserCreateComponent,
     UserEditComponent,
-    UserListComponent
+    UserListComponent,
+    ChatInboxComponent
   ],
   imports: [
     RouterModule.forRoot(routes),
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
+    FormsModule,
     ReactiveFormsModule,
     HttpClientModule
   ],
