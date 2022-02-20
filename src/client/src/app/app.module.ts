@@ -13,14 +13,8 @@ import { UserService } from './services/user.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ChatInboxComponent } from './components/chat-inbox/chat-inbox.component';
 import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
-
-const routes: Routes = [
-  { path: '', pathMatch: 'full', redirectTo: 'create-user' },
-  { path: 'create-user', component: UserCreateComponent },
-  { path: 'edit-user/:id', component: UserEditComponent },
-  { path: 'users-list', component: UserListComponent },
-  { path: 'thread', component: ChatInboxComponent }
-];
+import { ThreadListComponent } from './components/thread-list/thread-list.component';
+import { ThreadComponent } from './components/thread/thread.component';
 
 const config: SocketIoConfig = { url: 'http://localhost:4000', options: {} };
 
@@ -30,10 +24,11 @@ const config: SocketIoConfig = { url: 'http://localhost:4000', options: {} };
     UserCreateComponent,
     UserEditComponent,
     UserListComponent,
-    ChatInboxComponent
+    ChatInboxComponent,
+    ThreadListComponent,
+    ThreadComponent
   ],
   imports: [
-    RouterModule.forRoot(routes),
     SocketIoModule.forRoot(config),
     BrowserModule,
     AppRoutingModule,

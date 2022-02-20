@@ -2,25 +2,12 @@ let express = require('express'),
    http = require("http")
    createError = require('http-errors')
    path = require('path'),
-   mongoose = require('mongoose'),
    cors = require('cors'),
-   bodyParser = require('body-parser'),
-   dbConfig = require('./database/db');
-
-// Connecting with mongo db
-mongoose.Promise = global.Promise;
-mongoose.connect(dbConfig.db, {
-   useNewUrlParser: true
-}).then(() => {
-      console.log('Database sucessfully connected')
-   },
-   error => {
-      console.log('Database could not connect: ' + error)
-   }
-)
+   bodyParser = require('body-parser')
 
 // Setting up port with express js
-const userRoute = require('../backend/routes/user.route')
+const userRoute = require('./routes/user.route')
+const threadRoute = require('./routes/thread.route')
 const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
@@ -36,7 +23,8 @@ var corsOptions = {
 app.use(cors(corsOptions)); 
 app.use(express.static(path.join(__dirname, 'dist/sweater-app')));
 app.use('/', express.static(path.join(__dirname, 'dist/sweater-app')));
-app.use('/api', userRoute)
+app.use('/user', userRoute)
+app.use('/thread', threadRoute)
 
 // Create port
 const port = process.env.PORT || 4000;

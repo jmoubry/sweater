@@ -9,49 +9,22 @@ import { User } from '../models/user'
 })
 export class UserService {
   
-  baseUri:string = 'http://localhost:4000/api';
+  baseUri:string = 'http://localhost:4000/user';
   headers = new HttpHeaders().set('Content-Type', 'application/json');
   constructor(private http: HttpClient) { }
 
   // Create
   createUser(data: User): Observable<any> {
-    let url = `${this.baseUri}/create`;
+    let url = `${this.baseUri}`;
     return this.http.post(url, data)
       .pipe(
         catchError(this.errorMgmt)
       )
   }
+
   // Get all users
   getUsers() {
-    return this.http.get(`${this.baseUri}`);
-  }
-
-  // Get user
-  getUser(id: number): Observable<any> {
-    let url = `${this.baseUri}/read/${id}`;
-    return this.http.get(url, {headers: this.headers});
-    // return this.http.get(url, {headers: this.headers}).pipe(
-    //   map((res: Response) => {
-    //     return res || {}
-    //   }),
-    //   catchError(this.errorMgmt)
-    // )
-  }
-
-  // Update user
-  updateUser(id: number, data: User): Observable<any> {
-    let url = `${this.baseUri}/update/${id}`;
-    return this.http.put(url, data, { headers: this.headers }).pipe(
-      catchError(this.errorMgmt)
-    )
-  }
-
-  // Delete user
-  deleteUser(id: number): Observable<any> {
-    let url = `${this.baseUri}/delete/${id}`;
-    return this.http.delete(url, { headers: this.headers }).pipe(
-      catchError(this.errorMgmt)
-    )
+    return this.http.get<User[]>(`${this.baseUri}`);
   }
 
   // Error handling 

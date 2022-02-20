@@ -5,9 +5,9 @@
         <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
           <div class="form-group">
             <label for="inputName">Name</label>
-            <input class="form-control" type="text" formControlName="name">
+            <input class="form-control" type="text" formControlName="username">
             <!-- error -->
-            <div class="invalid-feedback" *ngIf="submitted && myForm.name.errors?.required">
+            <div class="invalid-feedback" *ngIf="submitted && myForm.username.errors?.required">
               Name is required.
             </div>
           </div>
