@@ -52,11 +52,22 @@ var io = require('socket.io')(server, { cors: {
    methods: ['GET', 'POST']
 }});
 
+const chatService = require('./services/chats');
+
 io.on('connection', (socket) => {
    console.log('a user connected');
 
    socket.on('message', (msg) => {
      // Send to others
-     socket.broadcast.emit('message-broadcast', { message: msg, from: 'Them', sent: new Date() });
+     socket.broadcast.emit('message-broadcast', msg);
+
+     try {
+      chatService.create(1, msg);
+    } catch (err) {
+      console.error(`Error while posting chat `, err.message);
+      next(err);
+    }
+
   });
  });
+ 

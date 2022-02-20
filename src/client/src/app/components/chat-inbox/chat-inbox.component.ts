@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
-import { Message } from '../../models/message';
+import { Component, Input, OnInit } from '@angular/core';
+import { Chat } from 'src/app/models/chat';
+import { ThreadService } from 'src/app/services/thread.service';
 import { ChatSocketService } from '../../services/chat-socket.service';
 
 @Component({
@@ -9,20 +9,25 @@ import { ChatSocketService } from '../../services/chat-socket.service';
   styleUrls: ['./chat-inbox.component.scss']
 })
 export class ChatInboxComponent implements OnInit {
+  @Input() threadId: number;
+  username: string = 'Jami';
   message: string;
-  messages: Message[] = [];
+  messages: Chat[] = [];
 
-  constructor(private chatSocketService: ChatSocketService) { }
+  constructor(private chatSocketService: ChatSocketService, private threadService: ThreadService) { }
 
   ngOnInit(): void {
+    this.threadService.getThreadChats(this.threadId).subscribe(c => this.messages = c.data);
+
     this.chatSocketService.getMessages().subscribe(response => {
       this.messages.push(response);
     });
   }
 
   sendMessage() {
-    this.chatSocketService.sendMessage(this.message);
-    this.messages.push({ message: this.message, from: 'Me', sent: new Date()});
+    const chat: Chat = { id: 0, message: this.message, username: this.username, created_at: new Date()};
+    this.chatSocketService.sendMessage(this.threadId, chat);
+    this.messages.push(chat);
     this.message = '';
  }
 }

@@ -32,7 +32,7 @@ export class ThreadService {
 
   // Get all threads
   getThreads() {
-    return this.http.get<ThreadPagedResponse>(`${this.baseUri}`);
+    return this.http.get<PagedThreadResponse>(`${this.baseUri}`);
   }
 
   getThread(threadId: number) {
@@ -40,7 +40,7 @@ export class ThreadService {
   }
 
   getThreadChats(threadId: number) {
-    return this.http.get<Chat[]>(`${this.baseUri}/${threadId}/chats`);
+    return this.http.get<PagedChatResponse>(`${this.baseUri}/${threadId}/chats`);
   }
 
   // Error handling 
@@ -58,6 +58,10 @@ export class ThreadService {
   }
 }
 
-class ThreadPagedResponse {
+class PagedThreadResponse {
   data: Thread[]
+}
+
+class PagedChatResponse {
+  data: Chat[];
 }

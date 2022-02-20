@@ -44,16 +44,6 @@ router.get('/:id/chats', async function(req, res, next) {
 });
 
 
-router.post('/:id/chat', async function(req, res, next) {
-    try {
-      res.json(await chats.create(req.params.id, req.body));
-    } catch (err) {
-      console.error(`Error while posting threads `, err.message);
-      next(err);
-    }
-  });
-  
-  
 
 
 module.exports = router;

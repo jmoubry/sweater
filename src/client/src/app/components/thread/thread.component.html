@@ -1,1 +1,8 @@
-<h1>{{thread.project}}: {{thread.title}}</h1>
+<h1>{{thread?.project}}: {{thread?.title}}</h1>
+
+<div *ngIf="thread" class="thread-container">
+    <div>
+        This is the thread document
+    </div>
+    <app-chat-inbox [threadId]="thread.id"></app-chat-inbox>
+</div>

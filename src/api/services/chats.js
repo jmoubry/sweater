@@ -5,7 +5,7 @@ const config = require('../config');
 async function getMultiple(threadId, page = 1) {
   const offset = helper.getOffset(page, config.listPerPage);
   const rows = await db.query(
-    'SELECT id, message, author, created_at FROM chat WHERE thread_id = $1 ORDER BY created_at DESC OFFSET $2 LIMIT $3', 
+    'SELECT id, message, username, created_at FROM chat WHERE thread_id = $1 ORDER BY created_at OFFSET $2 LIMIT $3', 
     [threadId, offset, config.listPerPage]
   );
   const data = helper.emptyOrRows(rows);
