@@ -1,3 +1,9 @@
+<div>
+  Username: 
+  <input class="chat-messages-create-input" [(ngModel)]="username" type="text">
+
+</div>
+
 <div class="chat-messages">
     <div class="chat-messages-show-container">
       <div class="chat-messages-show-list">
@@ -8,8 +14,7 @@
       </div>
     </div>
     <div class="chat-messages-create-container"> 
-      <input class="chat-messages-create-input" [(ngModel)]="username" type="text">
-      <input class="chat-messages-create-input" [(ngModel)]="message" (keydown.enter)="sendMessage()" type="text">
-      <button  class="chat-messages-create-button" (click)="sendMessage()"> Send </button>
+      <input class="chat-messages-create-input" [(ngModel)]="message" (keydown.enter)="sendChat()" type="text">
+      <button  class="chat-messages-create-button" (click)="sendChat()"> Send </button>
     </div>
  </div>

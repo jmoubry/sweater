@@ -1,6 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Chat } from 'src/app/models/chat';
-import { ThreadService } from 'src/app/services/thread.service';
 import { ChatSocketService } from '../../services/chat-socket.service';
 
 @Component({
@@ -14,19 +13,25 @@ export class ChatInboxComponent implements OnInit {
   message: string;
   messages: Chat[] = [];
 
-  constructor(private chatSocketService: ChatSocketService, private threadService: ThreadService) { }
+  constructor(private chatSocketService: ChatSocketService) { }
 
   ngOnInit(): void {
-    this.threadService.getThreadChats(this.threadId).subscribe(c => this.messages = c.data);
+    this.chatSocketService.requestChats(this.threadId);
 
-    this.chatSocketService.getMessages().subscribe(response => {
+    this.chatSocketService.getChats().subscribe(response => {
+      this.messages = response;
+    });
+
+    this.chatSocketService.getChat().subscribe(response => {
       this.messages.push(response);
     });
   }
 
-  sendMessage() {
-    const chat: Chat = { id: 0, message: this.message, username: this.username, created_at: new Date()};
-    this.chatSocketService.sendMessage(this.threadId, chat);
+  sendChat() {
+    const userId = this.username === 'Jami' ? 1 : 2; // TODO: need to login and store user ID
+
+    const chat: Chat = { id: 0, thread_id: this.threadId, message: this.message, username: this.username, user_id: userId, created_at: new Date(), parent_chat_id: null};
+    this.chatSocketService.sendChat(chat);
     this.messages.push(chat);
     this.message = '';
  }

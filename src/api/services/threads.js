@@ -5,7 +5,7 @@ const config = require('../config');
 async function getMultiple(page = 1) {
   const offset = helper.getOffset(page, config.listPerPage);
   const rows = await db.query(
-    'SELECT id, title, project, created_at, updated_at FROM thread OFFSET $1 LIMIT $2', 
+    'SELECT id, title, project, status, created_at, updated_at FROM threads OFFSET $1 LIMIT $2', 
     [offset, config.listPerPage]
   );
   const data = helper.emptyOrRows(rows);
@@ -19,7 +19,7 @@ async function getMultiple(page = 1) {
 
 async function getById(threadId) {
     const data = await db.query(
-        'SELECT id, title, project, created_at, updated_at FROM thread WHERE id = $1', 
+        'SELECT id, title, project, status, created_at, updated_at FROM threads WHERE id = $1', 
         [threadId]
       );
 
@@ -31,8 +31,8 @@ async function create(thread) {
     // validateCreate(thread);
 
     const result = await db.query(
-      'INSERT INTO thread(title, project) VALUES ($1, $2) RETURNING *',
-      [thread.title, thread.project]
+      'INSERT INTO threads(title, project, status) VALUES ($1, $2, $3) RETURNING *',
+      [thread.title, thread.project, 'Open']
     );
     let message = 'Error in creating thread';
   

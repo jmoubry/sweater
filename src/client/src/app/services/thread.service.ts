@@ -9,7 +9,7 @@ import { Thread } from '../models/thread';
 })
 export class ThreadService {
 
-  baseUri:string = 'http://localhost:4000/thread';
+  baseUri:string = 'http://localhost:4000/threads';
   headers = new HttpHeaders().set('Content-Type', 'application/json');
   constructor(private http: HttpClient) { }
 

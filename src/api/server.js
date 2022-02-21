@@ -1,3 +1,7 @@
+if (process.env.NODE_ENV !== 'production') {
+   require('dotenv').config();
+ }
+
 let express = require('express'),
    http = require("http")
    createError = require('http-errors')
@@ -6,8 +10,8 @@ let express = require('express'),
    bodyParser = require('body-parser')
 
 // Setting up port with express js
-const userRoute = require('./routes/user.route')
-const threadRoute = require('./routes/thread.route')
+const userRoute = require('./routes/users.route')
+const threadRoute = require('./routes/threads.route')
 const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
@@ -15,7 +19,7 @@ app.use(bodyParser.urlencoded({
 }));
 
 var corsOptions = {
-   origin: 'http://localhost:4200',
+   origin: process.env.CLIENT_URL,
    methods: ["GET", "POST"],
    optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
  }
@@ -23,8 +27,8 @@ var corsOptions = {
 app.use(cors(corsOptions)); 
 app.use(express.static(path.join(__dirname, 'dist/sweater-app')));
 app.use('/', express.static(path.join(__dirname, 'dist/sweater-app')));
-app.use('/user', userRoute)
-app.use('/thread', threadRoute)
+app.use('/users', userRoute)
+app.use('/threads', threadRoute)
 
 // Create port
 const port = process.env.PORT || 4000;
@@ -55,19 +59,29 @@ var io = require('socket.io')(server, { cors: {
 const chatService = require('./services/chats');
 
 io.on('connection', (socket) => {
-   console.log('a user connected');
+   console.log('a user connected ' + socket.id);
 
-   socket.on('message', (msg) => {
-     // Send to others
-     socket.broadcast.emit('message-broadcast', msg);
+   socket.on('getChats', async threadId => {
+      const room = `thread:${threadId}`;
+      console.log(console.log(`Socket ${socket.id} joining room ${room}`))
+      socket.join(room, () => console.log(`Socket ${socket.id} joined room thread:${threadId}`));
+      const chats = await chatService.getMultiple(threadId);
+      io.to(socket.id).emit("chats", chats.data);
+   });
 
-     try {
-      chatService.create(1, msg);
+   socket.on('chat', async (msg) => {
+      const room = `thread:${msg.thread_id}`;
+      console.log(`Received message ${msg.message} from ${socket.id} for room ${room}`);
+
+     // Send to room (excluding self)
+     socket.to(room).emit('chat-broadcast', msg);
+
+    try {
+      await chatService.create(msg.thread_id, msg);
     } catch (err) {
       console.error(`Error while posting chat `, err.message);
       next(err);
     }
-
   });
  });
  

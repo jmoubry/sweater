@@ -1,7 +1,7 @@
 const env = process.env;
 
 const config = {
-  db: { /* do not put password or any sensitive info here, done only for demo */
+  db: { /* do not put password or any sensitive info here */
     host: env.DB_HOST,
     port: env.DB_PORT,
     user: env.DB_USER,

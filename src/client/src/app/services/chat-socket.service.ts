@@ -7,12 +7,20 @@ import { Chat } from '../models/chat';
 export class ChatSocketService {
   constructor(private socket: Socket) { }
 
-  getMessages() {
-    return this.socket.fromEvent<Chat>('message-broadcast');
+  getChat() {
+    return this.socket.fromEvent<Chat>('chat-broadcast');
   }
 
-  sendMessage(threadId: number, chat: Chat) {
+  getChats() {
+    return this.socket.fromEvent<Chat[]>('chats');
+  }
+
+  requestChats(threadId: number) {
+    this.socket.emit('getChats', threadId);
+  }
+
+  sendChat(chat: Chat) {
     console.log('emitting ' + chat.message);
-    this.socket.emit('message', chat);
+    this.socket.emit('chat', chat);
   }
 }

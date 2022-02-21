@@ -12,7 +12,7 @@ const routes: Routes = [
   { path: 'edit-user/:id', component: UserEditComponent },
   { path: 'users-list', component: UserListComponent },
   { path: 'threads', component: ThreadListComponent },
-  { path: 'thread/:id', component: ThreadComponent }
+  { path: 'threads/:id', component: ThreadComponent }
 ];
 
 @NgModule({

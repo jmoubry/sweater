@@ -4,7 +4,7 @@ const config = require('../config');
 
 async function getMultiple() {
   const rows = await db.query(
-    'SELECT id, username, email FROM user_account'
+    'SELECT id, username, email FROM users'
   );
   const data = helper.emptyOrRows(rows);
 
@@ -51,7 +51,7 @@ async function create(user) {
     validateCreate(user);
 
     const result = await db.query(
-      'INSERT INTO user_account(username, email) VALUES ($1, $2) RETURNING *',
+      'INSERT INTO users(username, email) VALUES ($1, $2) RETURNING *',
       [user.username, user.email]
     );
     let message = 'Error in creating user';
