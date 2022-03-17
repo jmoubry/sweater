@@ -1,12 +1,14 @@
 const env = process.env;
 
 const config = {
-  db: { /* do not put password or any sensitive info here */
+  db: {
+    /* do not put password or any sensitive info here */
     host: env.DB_HOST,
     port: env.DB_PORT,
     user: env.DB_USER,
     password: env.DB_PASSWORD,
     database: env.DB_NAME,
+    dialect: env.DB_DIALECT,
   },
   listPerPage: env.LIST_PER_PAGE || 10,
 };

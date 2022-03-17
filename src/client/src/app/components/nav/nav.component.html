@@ -1,0 +1,1 @@
+{{ currentUser?.username }} <button *ngIf="authenticationService.isAuthenticated() | async" (click)="logout()">logout</button>

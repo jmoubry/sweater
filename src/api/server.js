@@ -10,7 +10,6 @@ let express = require('express'),
    bodyParser = require('body-parser')
 
 // Setting up port with express js
-const userRoute = require('./routes/users.route')
 const threadRoute = require('./routes/threads.route')
 const app = express();
 app.use(bodyParser.json());
@@ -27,8 +26,11 @@ var corsOptions = {
 app.use(cors(corsOptions)); 
 app.use(express.static(path.join(__dirname, 'dist/sweater-app')));
 app.use('/', express.static(path.join(__dirname, 'dist/sweater-app')));
-app.use('/users', userRoute)
 app.use('/threads', threadRoute)
+require('./routes/user.route')(app);
+
+const db = require("./models");
+db.sequelize.sync();
 
 // Create port
 const port = process.env.PORT || 4000;

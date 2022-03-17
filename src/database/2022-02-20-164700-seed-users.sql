@@ -8,8 +8,8 @@ INSERT INTO seed_data (username, email) VALUES
 ('Sean', 'sean@moubry.com');
 
 
-INSERT INTO users (username, email)
-SELECT username, email
+INSERT INTO users (username, email, "createdAt", "updatedAt")
+SELECT username, email, NOW(), NOW()
 FROM seed_data
 WHERE NOT EXISTS (SELECT id FROM users);
 

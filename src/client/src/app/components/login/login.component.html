@@ -1,0 +1,8 @@
+<form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+  <div class="form-group">
+    <label for="username">Email</label>
+    <input type="text" formControlName="username" />
+  </div>
+  <button [disabled]="!loginForm.valid">Login</button>
+  <div class="mt-2" *ngIf="error">{{ error.message }}</div>
+</form>

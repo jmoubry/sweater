@@ -15,6 +15,8 @@ import { ChatInboxComponent } from './components/chat-inbox/chat-inbox.component
 import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
 import { ThreadListComponent } from './components/thread-list/thread-list.component';
 import { ThreadComponent } from './components/thread/thread.component';
+import { LoginComponent } from './components/login/login.component';
+import { NavComponent } from './components/nav/nav.component';
 
 const config: SocketIoConfig = { url: 'http://localhost:4000', options: {} };
 
@@ -26,7 +28,9 @@ const config: SocketIoConfig = { url: 'http://localhost:4000', options: {} };
     UserListComponent,
     ChatInboxComponent,
     ThreadListComponent,
-    ThreadComponent
+    ThreadComponent,
+    LoginComponent,
+    NavComponent
   ],
   imports: [
     SocketIoModule.forRoot(config),

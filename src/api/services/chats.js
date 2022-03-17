@@ -5,7 +5,15 @@ const config = require('../config');
 async function getMultiple(threadId, page = 1) {
   const offset = helper.getOffset(page, config.listPerPage);
   const rows = await db.query(
-    'SELECT c.id, c.message, u.username, c.user_id, c.created_at FROM chats c JOIN users u ON c.user_id = u.id WHERE thread_id = $1 AND parent_chat_id IS NULL ORDER BY created_at OFFSET $2 LIMIT $3', 
+    `SELECT id, message, username, user_id, created_at
+     FROM (
+       SELECT c.id, c.message, u.username, c.user_id, c.created_at 
+       FROM chats c 
+       JOIN users u ON c.user_id = u.id 
+       WHERE thread_id = $1 AND parent_chat_id IS NULL 
+       ORDER BY created_at DESC 
+       OFFSET $2 LIMIT $3) most_recent
+     ORDER BY created_at`, 
     [threadId, offset, config.listPerPage]
   );
   const data = helper.emptyOrRows(rows);
@@ -20,7 +28,10 @@ async function getMultiple(threadId, page = 1) {
 async function getMultipleReplies(chatId, page = 1) {
   const offset = helper.getOffset(page, config.listPerPage);
   const rows = await db.query(
-    'SELECT id, message, user_id, created_at FROM chats WHERE parent_chat_id = $1 ORDER BY created_at OFFSET $2 LIMIT $3', 
+    `SELECT id, message, user_id, created_at 
+     FROM chats 
+     WHERE parent_chat_id = $1 
+     ORDER BY created_at OFFSET $2 LIMIT $3`, 
     [chatId, offset, config.listPerPage]
   );
   const data = helper.emptyOrRows(rows);
